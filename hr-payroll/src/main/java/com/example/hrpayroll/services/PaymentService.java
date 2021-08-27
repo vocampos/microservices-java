@@ -14,6 +14,12 @@ public class PaymentService {
 	private WorkerFeingClient workerFeingClient;
 
 	public Payment getPayment(Long workerId, Integer days) {
+//		try {
+//			Thread.sleep(3000L);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		
 		Worker worker = workerFeingClient.findById(workerId).getBody();
 

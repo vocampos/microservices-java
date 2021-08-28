@@ -2,6 +2,8 @@ package com.example.hrworker.resources;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -12,33 +14,35 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.hrworker.entities.Worker;
 import com.example.hrworker.repositories.WorkerRepository;
-import com.sun.istack.logging.Logger;
 
 @RestController
 @RequestMapping(value = "/workers")
 public class WorkerResource {
-	
-	private static Logger logger = Logger.getLogger(WorkerResource.class);
-	private static Long qtd = 1L;
-	
-	@Value("${eureka.instance.instance-id}")
-	public String server;
+
+	private static Logger logger = LoggerFactory.getLogger(WorkerResource.class);
+
+	@Value("${test.config}")
+	private String testConfig;
 
 	@Autowired
 	private WorkerRepository repository;
 
 	@GetMapping
 	public ResponseEntity<List<Worker>> findAll() {
-		logger.info(server + " QTD" + qtd++);
 		List<Worker> list = repository.findAll();
 		return ResponseEntity.ok(list);
 	}
 
-	@GetMapping(value="/{id}")
+	@GetMapping(value = "/{id}")
 	public ResponseEntity<Worker> findById(@PathVariable Long id) {
-		logger.info(server + " QTD" + qtd++);
 		Worker worker = repository.findById(id).get();
 		return ResponseEntity.ok(worker);
+	}
+
+	@GetMapping(value = "/configs")
+	public ResponseEntity<Void> getConfigs() {
+		logger.info("CONFIG " + testConfig);
+		return ResponseEntity.noContent().build();
 	}
 
 }
